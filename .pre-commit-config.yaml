@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: ''
+    hooks:
+      - id: eslint
+        args: ["--fix"]
+
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+        args: ["--line-length=79"]
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: cd api && pytest && cd ..
+        language: system
+        types: [python]
+      - id: jest
+        name: jest
+        entry: npm run test -- --passWithNoTests
+        language: system
+        types: [javascript]
+      - id: dart-fix
+        name: dart-fix
+        entry: cd view && dart fix --apply && cd ..
+        language: system
+        types: [dart]
