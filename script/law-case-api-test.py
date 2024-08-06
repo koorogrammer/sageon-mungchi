@@ -22,7 +22,7 @@ DETAIL_BASE_URL = "http://www.law.go.kr/DRF/lawService.do?target=prec"
 OC = os.environ["OC"]
 RESPONSE_TYPE = "XML"
 SEARCH_TYPE = "2"
-QUERY = "세무"
+QUERY = "세법"
 DISPLAY_COUNT = "100"
 # PRNC_YD = '20240805~20240805'
 
@@ -39,6 +39,7 @@ def clean_html(html_content):
 
 while total_page is None or current_page <= total_page:
     list_url = f"{LIST_BASE_URL}&OC={OC}&type={RESPONSE_TYPE}&search={SEARCH_TYPE}&query={QUERY}&page={current_page}&displayCount={DISPLAY_COUNT}"
+    # list_url = f"{LIST_BASE_URL}&OC={OC}&type={RESPONSE_TYPE}&search={SEARCH_TYPE}&query={QUERY}&page={current_page}&displayCount={DISPLAY_COUNT}&prncYd={PRNC_YD}"
     list_response = requests.get(list_url)
 
     if list_response.status_code == 200:
