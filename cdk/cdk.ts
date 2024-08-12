@@ -15,12 +15,12 @@ const app = new cdk.App();
 // processing 스택
 new VectorDBSagemakerProcessingStack(app, 'VectorDBSagemakerProcessingStack');
 
-// // 공통 스택
-// const vpcStack = new VpcStack(app, 'VpcStack');
-// const ecsClusterStack = new EcsClusterStack(app, 'BalpumEcsClusterStack', { vpc: vpcStack.vpc });
+// 공통 스택
+const vpcStack = new VpcStack(app, 'VpcStack');
+const ecsClusterStack = new EcsClusterStack(app, 'BalpumEcsClusterStack', { vpc: vpcStack.vpc });
 
-// // API 서비스 스택
-// new EcsApiStack(app, 'BalpumApiEcsStack', { vpc: vpcStack.vpc, cluster: ecsClusterStack.cluster });
+// API 서비스 스택
+new EcsApiStack(app, 'BalpumApiEcsStack', { vpc: vpcStack.vpc, cluster: ecsClusterStack.cluster });
 
-// // View 서비스 스택
-// new EcsViewStack(app, 'BalpumViewEcsStack', { vpc: vpcStack.vpc, cluster: ecsClusterStack.cluster });
+// View 서비스 스택
+new EcsViewStack(app, 'BalpumViewEcsStack', { vpc: vpcStack.vpc, cluster: ecsClusterStack.cluster });
