@@ -9,6 +9,7 @@ fastapi = {extras = ["all"] }
 requests = "2.32.3"
 boto3 = "*"
 beautifulsoup4 = "*"
+faiss-cpu = "==1.8.0.post1"
 
 [dev-packages]
 black = "24.4.2"

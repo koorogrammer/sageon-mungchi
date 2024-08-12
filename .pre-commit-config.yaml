@@ -15,7 +15,12 @@ repos:
     hooks:
       - id: pytest
         name: pytest
-        entry: cd api && pytest && cd ..
+        entry: cd api && pytest . && cd ..
+        language: system
+        types: [python]
+      - id: pytest
+        name: pytest
+        entry: cd processing && pytest . && cd ..
         language: system
         types: [python]
       - id: jest
