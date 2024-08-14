@@ -162,6 +162,7 @@ def get_embeddings(documents, embedding_type="cohere"):
 
         embeddings.append(embedding)
         metadata[i] = doc["metadata"]
+        metadata[i]["text"] = doc["text"]
 
     return embeddings, metadata
 
