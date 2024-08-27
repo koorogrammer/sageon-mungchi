@@ -17,20 +17,20 @@ export class EcsViewStack extends cdk.Stack {
 
         // Docker Image 등록
         const currentDir = __dirname;
-        const image = new DockerImageAsset(this, 'BalpumViewImage', {
+        const image = new DockerImageAsset(this, 'SageonMungchiViewImage', {
             directory: path.resolve(currentDir, '../../../view'),
         });
 
         // ECS Task Definition
-        const taskDefinition = new ecs.FargateTaskDefinition(this, 'BalpumViewTaskDef', {
+        const taskDefinition = new ecs.FargateTaskDefinition(this, 'SageonMungchiViewTaskDef', {
             memoryLimitMiB: 8192, 
             cpu: 4096,
         });
         const containerImage = ecs.ContainerImage.fromDockerImageAsset(image);
-        const container = taskDefinition.addContainer('BalpumViewContainer', {
+        const container = taskDefinition.addContainer('SageonMungchiViewContainer', {
             image: containerImage,
             logging: new ecs.AwsLogDriver({
-                streamPrefix: 'BalpumViewContainer',
+                streamPrefix: 'SageonMungchiViewContainer',
             }),
         });
         container.addPortMappings({
@@ -39,13 +39,13 @@ export class EcsViewStack extends cdk.Stack {
         });
 
         // Security Group 설정
-        const securityGroup = new ec2.SecurityGroup(this, 'BalpumViewSecurityGroup', {
+        const securityGroup = new ec2.SecurityGroup(this, 'SageonMungchiViewSecurityGroup', {
             vpc: props.vpc,
             allowAllOutbound: true,
         });
 
         // ECS Service 생성
-        const service = new ecs.FargateService(this, 'BalpumViewService', {
+        const service = new ecs.FargateService(this, 'SageonMungchiiewService', {
             cluster: props.cluster,
             taskDefinition: taskDefinition,
             desiredCount: 1,
@@ -56,11 +56,11 @@ export class EcsViewStack extends cdk.Stack {
         });
 
         // ALB 생성
-        const lb = new ApplicationLoadBalancer(this, 'BalpumViewLB', {
+        const lb = new ApplicationLoadBalancer(this, 'SageonMungchiViewLB', {
             vpc: props.vpc,
             internetFacing: true,
         });
-        const targetGroup = new ApplicationTargetGroup(this, 'BalpumViewTargetGroup', {
+        const targetGroup = new ApplicationTargetGroup(this, 'SageonMungchiViewTargetGroup', {
             vpc: props.vpc,
             port: 80,
             protocol: ApplicationProtocol.HTTP,
@@ -70,7 +70,7 @@ export class EcsViewStack extends cdk.Stack {
                 interval: cdk.Duration.seconds(30),
             }
         });
-        lb.addListener('BalpumViewListener', {
+        lb.addListener('SageonMungchiViewListener', {
             port: 80,
             open: true,
             defaultTargetGroups: [targetGroup]
@@ -81,7 +81,7 @@ export class EcsViewStack extends cdk.Stack {
             minCapacity: 1,
             maxCapacity: 2,
         });
-        scalableTarget.scaleOnRequestCount('BalpumViewRequestScaling', {
+        scalableTarget.scaleOnRequestCount('SageonMungchiViewRequestScaling', {
             requestsPerTarget: 1000,
             targetGroup: targetGroup,
             scaleOutCooldown: cdk.Duration.seconds(60),
