@@ -5,7 +5,7 @@ import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { ApplicationLoadBalancer, ApplicationTargetGroup, ApplicationProtocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as path from 'path';
-import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 interface VpcStackProps extends cdk.StackProps {
     vpc: ec2.Vpc;
@@ -35,10 +35,19 @@ export class EcsApiStack extends cdk.Stack {
         });
         ecsSecurityGroup.addIngressRule(lbsecurityGroup, ec2.Port.tcp(80));
 
+        // ECS Task Role 설정
+        const taskRole = new iam.Role(this, 'BalpumApiTaskRole', {
+            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+        });
+        taskRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonECSTaskExecutionRolePolicy'));
+        taskRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'));
+        taskRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBedrockFullAccess'));
+
         // ECS Task Definition
         const taskDefinition = new ecs.FargateTaskDefinition(this, 'BalpumApiTaskDef', {
             memoryLimitMiB: 2048,
             cpu: 1024,
+            taskRole: taskRole,
         });
         const containerImage = ecs.ContainerImage.fromDockerImageAsset(image);
         const container = taskDefinition.addContainer('BalpumApiContainer', {
