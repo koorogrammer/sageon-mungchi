@@ -62,4 +62,40 @@ describe('EcsCluster Test', () => {
     it('has ecs service log group resource', () => {
         template.hasResourceProperties('AWS::Logs::LogGroup', {});
     });
+
+    it('it has proper role policy', () => {
+        template.hasResourceProperties('AWS::IAM::Role', {
+            ManagedPolicyArns: [
+                {
+                    'Fn::Join': [
+                        '',
+                        [
+                            'arn:',
+                            { 'Ref': 'AWS::Partition' },
+                            ':iam::aws:policy/AmazonECSTaskExecutionRolePolicy'
+                        ]
+                    ]
+                },
+                {
+                    'Fn::Join': [
+                        '',
+                        [
+                            'arn:',
+                            { 'Ref': 'AWS::Partition' },
+                            ':iam::aws:policy/AmazonS3FullAccess'
+                        ]
+                    ]
+                },
+                {
+                    'Fn::Join': [
+                        '',
+                        [
+                            'arn:',
+                            { 'Ref': 'AWS::Partition' },
+                            ':iam::aws:policy/AmazonBedrockFullAccess'
+                        ]
+                    ]
+                },
+            ],
+    })});
 });
