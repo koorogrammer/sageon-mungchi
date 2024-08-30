@@ -13,6 +13,8 @@ interface VpcStackProps extends cdk.StackProps {
 }
 
 export class EcsApiStack extends cdk.Stack {
+    public readonly loadBalancerDns: string;
+
     constructor(scope: Construct, id: string, props: VpcStackProps) {
         super(scope, id, props);
 
@@ -39,7 +41,6 @@ export class EcsApiStack extends cdk.Stack {
         const taskRole = new iam.Role(this, 'SageonMungchiApiTaskRole', {
             assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
         });
-        taskRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonECSTaskExecutionRolePolicy'));
         taskRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'));
         taskRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBedrockFullAccess'));
 
@@ -110,5 +111,6 @@ export class EcsApiStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'SageonMungchiApiLoadBalancerDNS', {
             value: lb.loadBalancerDnsName,
         });
+        this.loadBalancerDns = lb.loadBalancerDnsName;
     }
 }
