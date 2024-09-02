@@ -15,15 +15,7 @@ interface VpcStackProps extends cdk.StackProps {
 export class VectorDBUpdateLambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: VpcStackProps) {
         super(scope, id, props);
-
-        // Lambda role 생성
-        const lambdaRole = new iam.Role(this, 'VectorDBUpdateLambdaRole', {
-            assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        });
-
-        // lambda layer
-        const requestsLayer = lambda.LayerVersion.fromLayerVersionArn(this, 'RequestsLayer', 'arn:aws:lambda:ap-northeast-2:770693421928:layer:Klayers-py310-requests:1');
-
+        
         // Lambda function 생성
         const lambdaFunction = new lambda.DockerImageFunction(this, 'VectorDBUpdateLambdaFunction', {
             code: lambda.DockerImageCode.fromImageAsset(join(__dirname, '../../../processing/vectordb-update')),

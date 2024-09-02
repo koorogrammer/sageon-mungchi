@@ -1,7 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { VectorDBSagemakerProcessingLambdaStack } from '../../stacks/processing/vectordb_sagemaker_processing';
-import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 
 describe('VectorDBSagemakerProcessing Test', () => {
     let template: Template;

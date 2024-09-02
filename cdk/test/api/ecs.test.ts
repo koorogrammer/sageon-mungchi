@@ -72,16 +72,6 @@ describe('EcsCluster Test', () => {
                         [
                             'arn:',
                             { 'Ref': 'AWS::Partition' },
-                            ':iam::aws:policy/AmazonECSTaskExecutionRolePolicy'
-                        ]
-                    ]
-                },
-                {
-                    'Fn::Join': [
-                        '',
-                        [
-                            'arn:',
-                            { 'Ref': 'AWS::Partition' },
                             ':iam::aws:policy/AmazonS3FullAccess'
                         ]
                     ]
