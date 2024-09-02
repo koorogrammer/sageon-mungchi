@@ -1,14 +1,13 @@
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import { VectorDBSagemakerProcessingStack } from '../../stacks/processing/vectordb_sagemaker_processing';
-import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
+import { VectorDBSagemakerProcessingLambdaStack } from '../../stacks/processing/vectordb_sagemaker_processing';
 
 describe('VectorDBSagemakerProcessing Test', () => {
     let template: Template;
 
     beforeAll(() => {
         const app = new cdk.App();
-        const stack = new VectorDBSagemakerProcessingStack(app, 'VectorDBSagemakerProcessingStack');
+        const stack = new VectorDBSagemakerProcessingLambdaStack(app, 'VectorDBSagemakerProcessingLambdaStack');
 
         template = Template.fromStack(stack);
     });

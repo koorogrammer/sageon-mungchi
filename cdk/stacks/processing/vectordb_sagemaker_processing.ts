@@ -7,7 +7,7 @@ import * as events from 'aws-cdk-lib/aws-events';
 import * as targets from 'aws-cdk-lib/aws-events-targets';
 import { join } from 'path';
 
-export class VectorDBSagemakerProcessingStack extends cdk.Stack {
+export class VectorDBSagemakerProcessingLambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 

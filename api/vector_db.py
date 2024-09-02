@@ -49,7 +49,7 @@ def get_vectordb_and_metadata():
     index_key, metadata_key = get_latest_index_and_matadata_key(keys)
     index = get_index(index_key)
     metadata = get_metadata(metadata_key)
-    return index, metadata
+    return index, metadata, index_key, metadata_key
 
 
 def get_cohere_embedding(text):
