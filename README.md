@@ -10,7 +10,7 @@
 
 ### 아키텍처
 <p align="center">
-  <img src="./doc/architecture/architecture_v0.1.png">
+  <img src="./doc/architecture/architecture_v0.2.png">
 </p>
 
 # 개발 환경
