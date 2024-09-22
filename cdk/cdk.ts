@@ -25,4 +25,4 @@ const ecsApiStack = new EcsApiStack(app, 'SageonMungchiApiEcsStack', { vpc: vpcS
 new VectorDBUpdateLambdaStack(app, 'VectorDBUpdateLambdaStack', { vpc: vpcStack.vpc, loadBalancerDns: ecsApiStack.loadBalancerDns });
 
 // View 서비스 스택
-// new EcsViewStack(app, 'SageonMungchiViewEcsStack', { vpc: vpcStack.vpc, cluster: ecsClusterStack.cluster });
+new EcsViewStack(app, 'SageonMungchiViewEcsStack', { vpc: vpcStack.vpc, cluster: ecsClusterStack.cluster });
