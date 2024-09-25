@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, JSONResponse
 from pydantic import BaseModel, Field
 
 from vector_db import get_vectordb_and_metadata, get_vectordb_query_result
-from chat import generate_prompt, generate_stream_answer
+from chat import generate_prompt, update_memory, generate_stream_answer
 
 import logging
 
@@ -50,7 +50,7 @@ class ChatRequest(BaseModel):
     )
 
 
-@app.post("/v1/chat/")
+@app.post("/v1/chat/")  # TODO: Streaming test 필요
 async def chat(request: ChatRequest):
     """사용자의 입력(query)에 대한 답변을 생성하는 API
 
@@ -62,15 +62,26 @@ async def chat(request: ChatRequest):
         StreamingResponse: 생성된 답변
     """
     query = request.query
-    conversation_history = request.conversation_history
+    conversation_memory = request.conversation_memory
 
     search_result = get_vectordb_query_result(query, index, metadata)
-    prompt = generate_prompt(query, search_result, conversation_history)
+    prompt = generate_prompt(query, search_result, conversation_memory)
 
-    logger.info(f"Chat Completed.")
+    answer = ""
 
-    return StreamingResponse(
-        generate_stream_answer(prompt), media_type="text/plain"
+    async def answer_streamer():
+        nonlocal answer
+        for chunk in generate_stream_answer(prompt):
+            yield chunk
+            answer += chunk
+
+    stream_response = StreamingResponse(
+        answer_streamer(), media_type="text/plain"
+    )
+    conversation_memory = update_memory(conversation_memory, query, answer)
+
+    return JSONResponse(
+        {"answer": stream_response, "conversation_memory": conversation_memory}
     )
 
 
